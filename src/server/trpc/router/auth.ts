@@ -7,14 +7,4 @@ export const authRouter = router({
 	getSecretMessage: protectedProcedure.query(() => {
 		return "you can now see this secret message!";
 	}),
-	getUserEvents: protectedProcedure.query(async ({ ctx }) => {
-		const { user } = ctx.session;
-		const events = await ctx.prisma.event.findMany({
-			where: {
-				ownerId: user.id
-			},
-		});
-		console.log(events);
-		return events;
-	})
 });
