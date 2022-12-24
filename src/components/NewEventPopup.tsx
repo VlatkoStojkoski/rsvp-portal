@@ -112,6 +112,20 @@ const NewEventPopup: React.FC<{
 						onChange={(e) => setDate(new Date(e.target.value))}
 					/>
 				</div>
+				<div>
+					<label htmlFor='time'>Time</label>
+					<input
+						type='time'
+						name='time'
+						id='time'
+						className='block border-stone-600 border-[1px] px-2 py-1'
+						value={((date.toISOString() as string).split('T') as [string, string])[1].split('.')[0] || '00:00'}
+						onChange={(e) => {
+							const [hours, minutes] = e.target.value.split(':') as [string, string];
+							setDate(new Date(date.setHours(+hours, +minutes)));
+						}}
+					/>
+				</div>
 				<button 
 					className='bg-stone-600 text-white px-2 py-1 rounded-md hover:bg-stone-500 max-w-xs'
 					onClick={(e) => {
