@@ -9,14 +9,15 @@ const NewEventPopup: React.FC<{
 		location: string,
 		date: Date
 	}) => void;
-}> = ({createEvent}) => {
+}> = ({ createEvent }) => {
 	const [linkAdded, setLinkAdded] = React.useState(false);
 	const [name, setName] = React.useState('');
 	const [description, setDescription] = React.useState('');
 	const [color, setColor] = React.useState('rich-blue');
 	const [location, setLocation] = React.useState('');
 	const [locationLink, setLocationLink] = React.useState('');
-	const [date, setDate] = React.useState<Date>(new Date());
+	const [selectedDate, setSelectedDate] = React.useState('');
+	const [selectedTime, setSelectedTime] = React.useState('');
 
 	return (
 		<>
@@ -108,8 +109,8 @@ const NewEventPopup: React.FC<{
 						name='date'
 						id='date'
 						className='block border-stone-600 border-[1px] px-2 py-1'
-						value={date.toISOString().split('T')[0]}
-						onChange={(e) => setDate(new Date(e.target.value))}
+						value={selectedDate}
+						onChange={(e) => setSelectedDate(e.target.value)}
 					/>
 				</div>
 				<div>
@@ -119,14 +120,11 @@ const NewEventPopup: React.FC<{
 						name='time'
 						id='time'
 						className='block border-stone-600 border-[1px] px-2 py-1'
-						value={((date.toISOString() as string).split('T') as [string, string])[1].split('.')[0] || '00:00'}
-						onChange={(e) => {
-							const [hours, minutes] = e.target.value.split(':') as [string, string];
-							setDate(new Date(date.setHours(+hours, +minutes)));
-						}}
+						value={selectedTime}
+						onChange={(e) => setSelectedTime(e.target.value)}
 					/>
 				</div>
-				<button 
+				<button
 					className='bg-stone-600 text-white px-2 py-1 rounded-md hover:bg-stone-500 max-w-xs'
 					onClick={(e) => {
 						e.preventDefault();
@@ -134,8 +132,8 @@ const NewEventPopup: React.FC<{
 							name,
 							description,
 							color,
-							location: linkAdded ? `[${location}](${locationLink})`: location,
-							date
+							location: linkAdded ? `[${location}](${locationLink})` : location,
+							date: new Date(`${selectedDate} ${selectedTime}`)
 						});
 					}}>
 					Create Event
