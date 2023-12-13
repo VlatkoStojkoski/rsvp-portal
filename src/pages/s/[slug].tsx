@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import { trpc } from "../../utils/trpc";
 
 const Slug = () => {
-	const {query: {slug}, push} = useRouter();
-	const {mutate: getSlug, data: slugData} = trpc.events.getEventBySlug.useMutation();
+	const { query: { slug }, push } = useRouter();
+	const { mutate: getSlug, data: slugData } = trpc.events.getEventBySlug.useMutation();
 
 	useEffect(() => {
-		if(!slug) return;
+		if (!slug) return;
 
 		getSlug({
 			slug: slug as string,
@@ -15,18 +15,13 @@ const Slug = () => {
 	}, [slug]);
 
 	useEffect(() => {
-		if(!slugData) return;
+		if (!slugData) return;
 		push(`/e/${slugData?.id}`);
 	}, [slugData]);
 
-	return slugData ? (
+	return (
 		<div className="pt-24 px-5 text-7xl font-bold">
-			<h1>{slug}</h1>
-		</div>
-	) : (
-		<div className="pt-24 px-5 text-7xl font-bold">
-			<h1 className="italic">404</h1>
-			<p>Slug not found</p>
+			<p>Loading event...</p>
 		</div>
 	);
 }
